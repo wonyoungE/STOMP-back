@@ -32,9 +32,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // 클라이언트가 구독할 주소의 접미사
+        // 메세지 구독 요청 url
         registry.enableSimpleBroker("/sub");
-        // 클라이언트가 메세지 보낼 주소의 접두사
+        // 메세지 발행 요청 url
         registry.setApplicationDestinationPrefixes("/pub");
     }
 

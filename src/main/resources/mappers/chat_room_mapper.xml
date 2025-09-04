@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stomp.chatting.mapper.ChatRoomMapper">
+    <resultMap id="UserResultMap" type="com.stomp.chatting.entity.User">
+        <id property="userId" column="ut_user_id"/>
+        <id property="username" column="username"/>
+        <id property="createDt" column="ut_create_dt"/>
+    </resultMap>
+    <resultMap id="MessageResultMap" type="com.stomp.chatting.entity.Message">
+        <id property="messageId" column="message_id"/>
+        <result property="chatRoomId" column="mt_chat_room_id"/>
+        <result property="userId" column="mt_user_id"/>
+        <result property="content" column="content"/>
+        <result property="type" column="type"/>
+        <result property="createDt" column="mt_create_dt"/>
+        <association property="user" resultMap="UserResultMap"/>
+    </resultMap>
+    <resultMap id="ChatRoomResultMap" type="com.stomp.chatting.entity.ChatRoom">
+        <id property="chatRoomId" column="crt_chat_room_id"/>
+        <result property="roomName" column="room_name"/>
+        <result property="createDt" column="crt_create_dt"/>
+        <collection property="messageList" resultMap="MessageResultMap"/>
+    </resultMap>
+
+    <select id="getChatRoomList">
+        SELECT
+            *
+        FROM
+            chat_room_tb
+    </select>
+
+    <select id="getChatRoomByChatRoomId" resultMap="ChatRoomResultMap">
+        SELECT
+            crt.chat_room_id as crt_chat_room_id,
+            crt.room_name,
+            crt.create_dt as crt_create_dt,
+
+            mt.message_id,
+            mt.chat_room_id as mt_chat_room_id,
+            mt.user_id,
+            mt.content,
+            mt.type,
+            mt.create_dt as mt_create_dt,
+
+            ut.user_id as ut_user_id,
+            ut.username,
+            ut.create_dt as ut_create_dt
+        FROM
+            chat_room_tb crt
+            LEFT JOIN message_tb mt ON (crt.chat_room_id = mt.chat_room_id)
+            LEFT JOIN user_tb ut ON (mt.user_id = ut.user_id)
+        WHERE
+            crt.chat_room_id = #{chatRoomId}
+    </select>
+</mapper>
