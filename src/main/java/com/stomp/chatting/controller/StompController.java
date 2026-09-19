@@ -58,5 +58,5 @@ public class StompController {
     public ApiRespDto<?> message(@DestinationVariable String roomId, MessageReqDto messageReqDto) {
         return messageService.insertMessage(messageReqDto);
     }
-
+// https://woo0doo.tistory.com/38
 }

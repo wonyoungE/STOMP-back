@@ -51,5 +51,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .withSockJS();  // WebSocket 연결 엔드포인트
         // sockjs는 WebSocket을 지원하지 않는 버전의 브라우저에서
         // WebSocket을 사용할 수 있게 해주는 라이브러리
+        registry.addEndpoint("/ws-stomp")
+                .setAllowedOriginPatterns("*");
     }
 }
